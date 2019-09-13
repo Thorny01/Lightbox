@@ -13,6 +13,7 @@ public protocol LightboxControllerDismissalDelegate: class {
 public protocol LightboxControllerTouchDelegate: class {
 
   func lightboxController(_ controller: LightboxController, didTouch image: LightboxImage, at index: Int)
+  func lightboxController(_ controller: LightboxController, didZoom image: LightboxImage, at index: Int, zoom scale: CGFloat)
 }
 
 open class LightboxController: UIViewController {
@@ -396,6 +397,8 @@ extension LightboxController: PageViewDelegate {
   }
 
   func pageViewDidZoom(_ pageView: PageView) {
+    imageTouchDelegate?.lightboxController(self, didZoom: images[currentPage], at: currentPage, zoom: pageView.zoomScale)
+    
     let duration = pageView.hasZoomed ? 0.1 : 0.5
     toggleControls(pageView: pageView, visible: !pageView.hasZoomed, duration: duration, delay: 0.5)
   }
